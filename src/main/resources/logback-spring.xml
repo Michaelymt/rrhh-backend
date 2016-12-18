@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{HH:mm:ss.SSS} [%-5level] [%30.30thread] [%30.30logger{0}:%-3line] - %msg%n</Pattern>
+        </layout>
+    </appender>
+
+    <timestamp key="myTimestamp" datePattern="yyyy-MM-dd"/>
+
+    <appender name="BACKEND" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+		<file>/User/josediaz/logs/runakuna-be.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>/home/tss/logs/runakuna-be-${myTimestamp}.%i.zip</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>100</maxIndex>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>300MB</maxFileSize>
+        </triggeringPolicy>
+
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%-5level] [%30.30thread] [%30.30logger{0}:%-3line] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <!-- DEV CONFIG -->
+    <springProfile name="dev">
+        <logger name="pe.com.tss.runakuna" level="DEBUG" additivity="false">
+            <appender-ref ref="BACKEND" />
+            <appender-ref ref="STDOUT" />
+        </logger>
+        <logger name="org.springframework" level="INFO" additivity="false">
+            <appender-ref ref="BACKEND" />
+            <appender-ref ref="STDOUT" />
+        </logger>
+        <logger name="org.springframework.transaction" level="WARN" additivity="false">
+            <appender-ref ref="BACKEND" />
+        </logger>
+        <logger name="org.springframework.orm.jpa.JpaTransactionManager" level="WARN" additivity="false">
+            <appender-ref ref="BACKEND" />
+        </logger>
+        <logger name="org.springframework.security" level="DEBUG" additivity="false">
+            <appender-ref ref="BACKEND" />
+        </logger>
+        <logger name="org.springframework.web.servlet.mvc" level="INFO" additivity="false">
+            <appender-ref ref="BACKEND" />
+        </logger>
+        <logger name="org.hibernate" level="INFO" additivity="false">
+            <appender-ref ref="BACKEND" />
+        </logger>
+        <logger name="org.hibernate.SQL" level="WARN" additivity="false">
+            <appender-ref ref="BACKEND" />
+        </logger>
+        <logger name="org.hibernate.engine.jdbc.batch.internal.BatchingBatch" level="INFO" additivity="false">
+            <appender-ref ref="BACKEND" />
+        </logger>
+        <logger name="pe.com.tss.runakuna.support.LoggingAspect" level="WARN" additivity="false">
+            <appender-ref ref="BACKEND" />
+        </logger>
+
+
+    </springProfile>
+
+    <!-- PROD/UAT CONFIG -->
+    <springProfile name="prod,uat">
+        <logger name="pe.com.tss.runakuna" level="INFO" additivity="false">
+            <appender-ref ref="BACKEND" />
+        </logger>
+        <logger name="org.springframework" level="INFO" additivity="false">
+            <appender-ref ref="BACKEND" />
+        </logger>
+        <logger name="org.springframework.transaction" level="WARN" additivity="false">
+            <appender-ref ref="BACKEND" />
+        </logger>
+        <logger name="org.springframework.orm.jpa.JpaTransactionManager" level="WARN" additivity="false">
+            <appender-ref ref="BACKEND" />
+        </logger>
+        <logger name="org.springframework.security" level="DEBUG" additivity="false">
+            <appender-ref ref="BACKEND" />
+        </logger>
+        <logger name="org.springframework.web.servlet.mvc" level="INFO" additivity="false">
+            <appender-ref ref="BACKEND" />
+        </logger>
+        <logger name="org.hibernate.SQL" level="WARN" additivity="false">
+            <appender-ref ref="BACKEND" />
+        </logger>
+        <logger name="org.hibernate.engine.jdbc.batch.internal.BatchingBatch" level="INFO" additivity="false">
+            <appender-ref ref="BACKEND" />
+        </logger>
+        <logger name="pe.com.tss.runakuna.support.LoggingAspect" level="WARN" additivity="false">
+            <appender-ref ref="BACKEND" />
+        </logger>
+
+    </springProfile>
+
+
+
+    <springProfile name="dev">
+        <root level="info">
+            <appender-ref ref="BACKEND" />
+            <appender-ref ref="STDOUT" />
+        </root>
+    </springProfile>
+
+    <springProfile name="prod">
+        <root level="info">
+            <appender-ref ref="BACKEND" />
+        </root>
+    </springProfile>
+
+
+
+</configuration>
